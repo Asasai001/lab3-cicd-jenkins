@@ -28,7 +28,12 @@ pipeline {
         
         stage('Docker Build') {
            steps {
-               sh 'docker build -t my-app:0.1.0 .'
+               scripts {
+                   if (env.BRANCH_NAME == 'main') {
+                       sh 'docker build -t nodemain:v1.0 .'
+                   } else if (env.BRANCH_NAME == 'dev') {
+                       sh 'docker build -t nodedev:v1.0 .'
+                   }
            }
         }
         
@@ -36,9 +41,9 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'main') {
-                        sh 'docker run -d -p 3000:3000 my-app:0.1.0'
+                        sh 'docker run -d -p 3000:3000 --name nodemain nodemain:v1.0'
                     } else if (env.BRANCH_NAME == 'dev') {
-                        sh 'docker run -d -p 3001:3000 my-app:0.1.0'
+                        sh 'docker run -d -p 3001:3000 --name nodedev nodedev:v1.0'
                     }
                 }
             }
