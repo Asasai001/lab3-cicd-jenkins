@@ -28,7 +28,7 @@ pipeline {
         
         stage('Docker Build') {
            steps {
-               scripts {
+               script {
                    if (env.BRANCH_NAME == 'main') {
                        sh 'docker build -t nodemain:v1.0 .'
                    } else if (env.BRANCH_NAME == 'dev') {
