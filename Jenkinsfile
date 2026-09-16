@@ -42,9 +42,15 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'main') {
-                        sh 'docker run -d -p 3000:3000 --name nodemain nodemain:v1.0'
+                        sh '''
+                            docker rm -f nodemain || true
+                            docker run -d -p 3000:3000 --name nodemain nodemain:v1.0
+                        '''
                     } else if (env.BRANCH_NAME == 'dev') {
-                        sh 'docker run -d -p 3001:3000 --name nodedev nodedev:v1.0'
+                        sh '''
+                            docker rm -f nodedev || true
+                            docker run -d -p 3001:3000 --name nodedev nodedev:v1.0
+                        '''
                     }
                 }
             }
