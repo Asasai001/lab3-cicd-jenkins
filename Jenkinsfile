@@ -34,7 +34,8 @@ pipeline {
                    } else if (env.BRANCH_NAME == 'dev') {
                        sh 'docker build -t nodedev:v1.0 .'
                    }
-           }
+                }
+            }
         }
         
         stage('Deploy') {
