@@ -15,11 +15,15 @@ pipeline {
         }
         
         stage('Build') {
-            sh 'scripts/build.sh'
+            steps {
+                sh 'scripts/build.sh'
+            }
         }
         
         stage('Test') {
-            sh 'scripts/test.sh'
+            steps {
+                sh 'scripts/test.sh'
+            }
         }
         
         stage('Docker Build') {
@@ -34,9 +38,10 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         sh 'docker run -d -p 3000:3000 my-app:0.1.0'
                     } else if (env.BRANCH_NAME == 'dev') {
-                        sh 'docker run -d -p 3001:3001 my-app:0.1.0'
+                        sh 'docker run -d -p 3001:3000 my-app:0.1.0'
                     }
                 }
             }
         }
     }
+}
