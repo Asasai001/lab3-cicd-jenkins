@@ -38,6 +38,38 @@ pipeline {
             }
         }
         
+        stage('Push') {
+            steps {
+                script {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'dockerhub',
+                            usernameVariable: 'DOCKER_USERNAME',
+                            passwordVariable: 'DOCKER_PASSWORD'
+                        )
+                        ]) {
+                            sh '''
+                                echo "$DOCKER_PASSWORD" | docker login \
+                                    -u "$DOCKER_USERNAME" \
+                                    --password-stdin
+                            '''
+                
+                        if (env.BRANCH_NAME == 'main') {
+                            sh '''
+                                docker tag nodemain:v1.0 asasai001/lab3-cicd:nodemain-v1.0
+                                docker push asasai001/lab3-cicd:nodemain-v1.0
+                            '''
+                        } else if (env.BRANCH_NAME == 'dev') {
+                            sh '''
+                                docker tag nodedev:v1.0 asasai001/lab3-cicd:nodedev-v1.0
+                                docker push asasai001/lab3-cicd:nodedev-v1.0
+                            '''
+                        }
+                    }
+                }
+            }
+        }
+        
         stage('Deploy') {
             steps {
                 script {
