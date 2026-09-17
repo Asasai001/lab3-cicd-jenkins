@@ -16,7 +16,7 @@ pipeline {
                 script {
                     sh '''
                         docker rm -f nodedev || true
-                        docker run -d -p 3001:3000 --name nodedev asasai001/lab3-cicd:nodedev:v1.0
+                        docker run -d -p 3001:3000 --name nodedev asasai001/lab3-cicd:nodedev-v1.0
                     '''
                     
                 }
